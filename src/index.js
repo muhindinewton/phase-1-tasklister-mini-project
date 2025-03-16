@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   // Select elements
   const form = document.querySelector("#create-task-form");
@@ -14,15 +13,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (taskText !== "") {
       // Create a new list item
       const taskItem = document.createElement("li");
-      taskItem.textContent = taskText;
+
+      // Create a span to hold just the task text
+      const taskSpan = document.createElement("span");
+      taskSpan.textContent = taskText;
 
       // Create delete button
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "❌";
       deleteButton.addEventListener("click", () => taskItem.remove());
 
-      // Append delete button to task item
-      taskItem.appendChild(deleteButton);      
+      // Append elements to task item
+      taskItem.appendChild(taskSpan);
+      taskItem.appendChild(deleteButton);
 
       // Append the task to the list
       taskList.appendChild(taskItem);
