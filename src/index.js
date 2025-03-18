@@ -1,37 +1,51 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Select elements
-  const form = document.querySelector("#create-task-form");
-  const taskList = document.querySelector("#tasks");
+// Wait for the DOM to load before executing
+document.addEventListener('DOMContentLoaded', () => {
+  displayDate(); // Show current date on page load
 
-  form.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent default form submission
+  let form = document.querySelector('#create-task-form');
+  let taskInput = document.querySelector('#new-task-description');
+  let taskList = document.querySelector('#tasks'); 
 
-    // Get the input value
-    const taskInput = document.querySelector("#new-task-description");
-    const taskText = taskInput.value.trim();
+  if (!form || !taskInput || !taskList) {
+      console.error("Form, input, or task list not found.");
+      return;
+  }
 
-    if (taskText !== "") {
-      // Create a new list item
-      const taskItem = document.createElement("li");
+  form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Prevent page refresh
 
-      // Create a span to hold just the task text
-      const taskSpan = document.createElement("span");
-      taskSpan.textContent = taskText;
+      let todoInput = taskInput.value.trim();
+      if (todoInput === '') {
+          alert('Please enter a task!'); // Prevent empty task submission
+          return;
+      }
 
-      // Create delete button
-      const deleteButton = document.createElement("button");
-      deleteButton.textContent = "❌";
-      deleteButton.addEventListener("click", () => taskItem.remove());
-
-      // Append elements to task item
-      taskItem.appendChild(taskSpan);
-      taskItem.appendChild(deleteButton);
-
-      // Append the task to the list
-      taskList.appendChild(taskItem);
-
-      // Clear the input field
-      taskInput.value = "";
-    }
+      buildToDo(todoInput);
+      form.reset(); // Clear input field after submission
   });
 });
+
+// Function to create a new task
+function buildToDo(todo) {
+  let li = document.createElement('li');
+  let btn = document.createElement('button');
+
+  btn.addEventListener('click', handleDelete);
+  btn.textContent = ' x '; // Delete button
+  li.textContent = `${todo} `;
+  li.appendChild(btn);
+
+  document.querySelector('#tasks').appendChild(li); 
+}
+
+// Function to delete a task
+function handleDelete(e) {
+  e.target.parentNode.remove();
+}
+
+// Function to display the current date
+function displayDate() {
+  const today = new Date();
+  const dateString = today.toDateString();
+  document.getElementById('current-date').innerText = `Today's Date: ${dateString}`;
+}
